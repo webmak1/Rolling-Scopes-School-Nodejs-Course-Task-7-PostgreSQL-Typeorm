@@ -1,3 +1,4 @@
+PGDATA/
 node_modules
 build/
 dist/

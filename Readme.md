@@ -7,17 +7,19 @@
 Если вы работаете windows и есть gmail аккаунт, работу можно протестировать в бесплатных облаках google.
 https://shell.cloud.google.com/
 
-
-
 <br/>
 
-### Запуск 
+    $ yarn db:drop
+    $ yarn db:create CreateUsers
+    $ yarn db:migrate
+
+### Запуск
 
 Нужно установить docker и docker-compose.
 
 Скопировать проект.
 
-В каталоге Rolling-Scopes-School-Nodejs-Course-Task-6-Docker-basics выполнить. 
+В каталоге Rolling-Scopes-School-Nodejs-Course-Task-6-Docker-basics выполнить.
 
 <br/>
 
@@ -31,10 +33,9 @@ $ docker-compose up --build
 
 http://localhost:4000/doc/
 
-
 <br/>
 
-### Остановка и удаление 
+### Остановка и удаление
 
 ```
 ^CTRL + C
@@ -44,15 +45,13 @@ http://localhost:4000/doc/
 $ docker-compose rm
 ```
 
-
-
 <br/>
 
 ### Возможные проверки
 
 **Проверка обновления приложения, при изменении файла**
 
-Предлагаю, в файле app.ts разкомментировать 
+Предлагаю, в файле app.ts разкомментировать
 
 ```
 // throw Error('Oops! uncaughtException Happened!');
@@ -78,7 +77,6 @@ $ docker exec -it rsschool-app sh
 
 Пароль: pass123
 
-
 ```
 postgres=# \l
 ```
@@ -87,13 +85,11 @@ postgres=# \l
 
 ![Application](/img/pic-02.png?raw=true)
 
-
 ```
 $ docker scan webmakaka/rsschool-app
 ```
 
 ✓ Tested 24 dependencies for known vulnerabilities, no vulnerable paths found.
-
 
 ```
 $ docker scan webmakaka/rsschool-postgres
@@ -105,13 +101,12 @@ $ docker scan webmakaka/rsschool-postgres
 
 ![Application](/img/pic-03.png?raw=true)
 
-
 <br/>
 
 Запушу контейнеры на dockerhub
 
 ```
-$ docker login 
+$ docker login
 $ docker push webmakaka/rsschool-app
 $ docker push webmakaka/rsschool-postgres
 ```
@@ -123,7 +118,6 @@ $ docker push webmakaka/rsschool-postgres
 https://hub.docker.com/repository/docker/webmakaka/rsschool-app
 
 https://hub.docker.com/repository/docker/webmakaka/rsschool-postgres
-
 
 <br/>
 
@@ -186,22 +180,20 @@ $ docker network inspect rsschool-network -f "{{json .Containers }}" \
 restart: always
 ```
 
-При, что включает в себя автоматический перезапуск при ошибке. 
+При, что включает в себя автоматический перезапуск при ошибке.
 
-:heavy_check_mark:  Логи и файлы базы данных хранятся в volumes, а не в контейнере +30 баллов
-
+:heavy_check_mark: Логи и файлы базы данных хранятся в volumes, а не в контейнере +30 баллов
 
 В конфиге прописаны volumes:
 
 - для приложения это все приложение, включая логи.
 - для базы данных каталог PGDATA в корне проекта с данными для базы данных.
 
-
 <br/>
 
 Штрафы:
 
-:heavy_check_mark: Внесение изменений в репозиторий после дедлайна не считая коммиты, вносящие изменения только в Readme.md 
+:heavy_check_mark: Внесение изменений в репозиторий после дедлайна не считая коммиты, вносящие изменения только в Readme.md
 минус 30% от максимального балла за задание (для этого задания 33 балла)
 
 Изменений нет.
@@ -237,6 +229,3 @@ Pull Request есть.
 :heavy_check_mark: Postgress image не указана как зависимость для node image -20 баллов
 
 Указан.
-
-
-

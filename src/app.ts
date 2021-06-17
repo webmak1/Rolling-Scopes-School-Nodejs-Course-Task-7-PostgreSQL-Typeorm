@@ -1,6 +1,7 @@
 import { Application, NextFunction, Request, Response } from 'express';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import * as path from 'path';
+import 'reflect-metadata';
 import { router as boardRouter } from 'resources/boards/board.router';
 import { router as taskRouter } from 'resources/tasks/task.router';
 import { router as userRouter } from 'resources/users/user.router';

@@ -8,6 +8,7 @@ export class BoardEntity {
   @Column()
   title: string;
 
-  @Column()
-  columns: string;
+  @Column({ type: 'json', array: false })
+  columns: Array<{ title: string; order: number }>;
+  // columns: string;
 }

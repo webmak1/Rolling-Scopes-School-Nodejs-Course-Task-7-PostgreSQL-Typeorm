@@ -1,9 +1,15 @@
 // @ts-check
 
 import { v4 as uuidv4 } from 'uuid';
+
+export interface IColumns {
+  title: string;
+  order: number;
+}
+
 interface IBoardGeneral {
   title: string;
-  columns: string;
+  columns: IColumns[];
 }
 export interface IBoard extends IBoardGeneral {
   id: number;

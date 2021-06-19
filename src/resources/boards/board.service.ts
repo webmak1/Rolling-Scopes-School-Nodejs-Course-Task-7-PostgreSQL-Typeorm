@@ -1,6 +1,6 @@
 // @ts-check
 
-import { IBoard } from 'resources/boards/board.model';
+import { IBoard, IColumns } from 'resources/boards/board.model';
 import { getRepository } from 'typeorm';
 import { BoardEntity } from './board.entity';
 
@@ -26,9 +26,12 @@ const get = async (boardId: string): Promise<IBoard> => {
 const create = async (title: string, columns: string): Promise<IBoard> => {
   const boardRepository = getRepository(BoardEntity);
 
+  // @ts-ignore
+  const columnsRes = columnsToArrayofObjects(columns as IColumns[]);
+
   const board = new BoardEntity();
   board.title = title;
-  board.columns = columns;
+  board.columns = columnsRes;
 
   const createdBoard = await boardRepository.save(board);
   if (!createdBoard) {
@@ -45,9 +48,15 @@ const update = async (
 ): Promise<IBoard> => {
   const boardRepository = getRepository(BoardEntity);
 
+  console.log('columns');
+  console.log(columns);
+
+  // @ts-ignore
+  const columnsRes = columnsToArrayofObjects(columns as IColumns[]);
+
   const updatedBoard = await boardRepository.update(boardId, {
     title,
-    columns,
+    columns: columnsRes,
   });
 
   if (!updatedBoard.affected) {
@@ -69,6 +78,17 @@ const remove = async (boardId: string): Promise<IBoard> => {
     throw new Error("[App] Can't Delete Board!");
   }
   return boardDeleteResult;
+};
+
+const columnsToArrayofObjects = (columns: IColumns[]) => {
+  const columnsParsed: IColumns[] = [];
+
+  // @ts-ignore
+  columns.map((column: IColumns) => {
+    columnsParsed.push(column);
+  });
+
+  return columnsParsed;
 };
 
 export const boardsService = {

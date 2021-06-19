@@ -12,11 +12,11 @@ interface ITaskGeneral {
 }
 
 export interface ITask extends ITaskGeneral {
-  id: number;
+  id: string;
 }
 
 export interface ITaskInput extends ITaskGeneral {
-  id: number | undefined;
+  id: string | undefined;
 }
 
 export class Task implements ITask {
@@ -29,7 +29,7 @@ export class Task implements ITask {
   public columnId;
 
   constructor({
-    id = +uuidv4(),
+    id = uuidv4(),
     title,
     order,
     description,

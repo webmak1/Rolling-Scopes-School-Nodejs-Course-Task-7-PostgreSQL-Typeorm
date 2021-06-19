@@ -6,11 +6,11 @@ export class UserEntity {
   id: number;
 
   @Column()
-  public name: string;
+  name: string;
 
   @Column()
-  public login: string;
+  login: string;
 
   @Column()
-  public password: string;
+  password: string;
 }

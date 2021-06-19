@@ -3,23 +3,23 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({ name: 'tasks' })
 export class TaskEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
-  public title: string;
+  title: string;
 
   @Column()
-  public order: number;
+  order: number;
 
   @Column()
-  public description: string;
+  description: string;
 
   @Column({ nullable: true })
-  public userId: string;
+  userId: string;
 
-  @Column()
-  public boardId: string;
+  @Column('uuid')
+  boardId: string;
 
-  @Column({ nullable: true })
-  public columnId: string;
+  @Column({ type: 'json', nullable: true })
+  columnId: string;
 }

@@ -12,10 +12,14 @@ const getAll = async (): Promise<ITask[]> => {
 };
 
 // GET TASK BY ID
-const get = async (boardId: string, taskId: number): Promise<ITask> => {
+const get = async (boardId: string, taskId: string): Promise<ITask> => {
   console.log(boardId);
   const taskRepository = getRepository(TaskEntity);
   const task = await taskRepository.findOne(taskId);
+
+  console.log('Task');
+  console.log(task);
+
   if (!task) {
     throw new Error('[App] Task not found!');
   }
@@ -41,8 +45,8 @@ const create = async (
   task.userId = userId;
   task.columnId = columnId;
 
-  // console.log('Task');
-  // console.log(task);
+  console.log('Task');
+  console.log(task);
 
   const createdTask = await taskRepository.save(task);
   if (!createdTask) {
@@ -56,10 +60,11 @@ const create = async (
   return createdTaskResult;
 };
 
+// TODO: _order
 // UPDATE TASK
 const update = async (
   boardId: string,
-  taskId: number,
+  taskId: string,
   title: string,
   _order: string,
   description: string,
@@ -84,7 +89,7 @@ const update = async (
 };
 
 // DELETE TASK
-const remove = async (taskId: number): Promise<ITask> => {
+const remove = async (taskId: string): Promise<ITask> => {
   const taskDeleteResult = await get(null, taskId);
 
   const taskRepository = getRepository(TaskEntity);

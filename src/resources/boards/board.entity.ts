@@ -6,8 +6,8 @@ export class BoardEntity {
   id: number;
 
   @Column()
-  public title: string;
+  title: string;
 
   @Column()
-  public columns: string;
+  columns: string;
 }

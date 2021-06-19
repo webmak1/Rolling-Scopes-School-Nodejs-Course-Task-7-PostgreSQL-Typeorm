@@ -6,11 +6,11 @@ interface IBoardGeneral {
   columns: string;
 }
 export interface IBoard extends IBoardGeneral {
-  id: string;
+  id: number;
 }
 
 export interface IBoardInput extends IBoardGeneral {
-  id: string | undefined;
+  id: number | undefined;
 }
 
 export class Board implements IBoard {
@@ -18,13 +18,9 @@ export class Board implements IBoard {
   public title;
   public columns;
 
-  constructor({ id = uuidv4(), title, columns }: IBoardInput) {
+  constructor({ id = +uuidv4(), title, columns }: IBoardInput) {
     this.id = id;
     this.title = title;
     this.columns = columns;
-  }
-
-  static toResponse(board: IBoard): IBoard {
-    return board;
   }
 }

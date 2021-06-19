@@ -36,7 +36,7 @@ const create = async (
 
   const createdUser = await userRepository.save(user);
   if (!createdUser) {
-    throw new Error('[App] Null Pointer Exception!');
+    throw new Error("[App] Can't create a User!");
   }
 
   const createdUserResult = await get(createdUser.id.toString());
@@ -73,7 +73,7 @@ const remove = async (userId: string): Promise<IUserOutput> => {
   const res = await userRepository.delete(userId);
 
   if (!res.affected) {
-    throw new Error('[App] Cant Delete user!');
+    throw new Error('[App] Cant Delete User!');
   }
   return userDeleteResult;
 };

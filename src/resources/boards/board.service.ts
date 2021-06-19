@@ -1,27 +1,40 @@
 // @ts-check
 
-import { boardsRepo } from 'resources/boards/board.memory.repository';
-import { Board, IBoard } from 'resources/boards/board.model';
+import { IBoard } from 'resources/boards/board.model';
+import { getRepository } from 'typeorm';
+import { BoardEntity } from './board.entity';
 
 // GET ALL BOARDS
 const getAll = async (): Promise<IBoard[]> => {
-  const boards = await boardsRepo.getAll();
-  return boards.map(Board.toResponse);
+  const boardRepository = getRepository(BoardEntity);
+  const boards = await boardRepository.find({});
+
+  return boards;
 };
 
 // GET BOARD
 const get = async (boardId: string): Promise<IBoard> => {
-  const board = await boardsRepo.get(boardId);
-  return Board.toResponse(board);
+  const boardRepository = getRepository(BoardEntity);
+  const board = await boardRepository.findOne(boardId);
+  if (!board) {
+    throw new Error('[App] Board is not found!');
+  }
+  return board;
 };
 
 // CREATE BOARD
 const create = async (title: string, columns: string): Promise<IBoard> => {
-  const board = await boardsRepo.create(title, columns);
-  if (board) {
-    return Board.toResponse(board);
+  const boardRepository = getRepository(BoardEntity);
+
+  const board = new BoardEntity();
+  board.title = title;
+  board.columns = columns;
+
+  const createdBoard = await boardRepository.save(board);
+  if (!createdBoard) {
+    throw new Error('[App] Cant create Board!');
   }
-  throw new Error('[App] Null Pointer Exception!');
+  return createdBoard;
 };
 
 // UPDATE BOARD
@@ -30,20 +43,32 @@ const update = async (
   title: string,
   columns: string
 ): Promise<IBoard> => {
-  const board = await boardsRepo.update(boardId, title, columns);
-  if (board) {
-    return Board.toResponse(board);
+  const boardRepository = getRepository(BoardEntity);
+
+  const updatedBoard = await boardRepository.update(boardId, {
+    title,
+    columns,
+  });
+
+  if (!updatedBoard.affected) {
+    throw new Error("[App] Can't Update Board!");
   }
-  throw new Error('[App] Null Pointer Exception!');
+
+  const updatedBoardResult = await get(boardId);
+  return updatedBoardResult;
 };
 
 // DELETE BOARD
 const remove = async (boardId: string): Promise<IBoard> => {
-  const board = await boardsRepo.remove(boardId);
-  if (board) {
-    return Board.toResponse(board);
+  const boardDeleteResult = await get(boardId);
+  const boardRepository = getRepository(BoardEntity);
+
+  const res = await boardRepository.delete(boardId);
+
+  if (!res.affected) {
+    throw new Error('[App] Cant Delete Board!');
   }
-  throw new Error('[App] Null Pointer Exception!');
+  return boardDeleteResult;
 };
 
 export const boardsService = {

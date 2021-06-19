@@ -1,18 +1,25 @@
 // @ts-check
 
-import { tasksRepo } from 'resources/tasks/task.memory.repository';
-import { ITask, Task } from 'resources/tasks/task.model';
+import { ITask } from 'resources/tasks/task.model';
+import { getRepository } from 'typeorm';
+import { TaskEntity } from './task.entity';
 
 // GET ALL TASKS
 const getAll = async (): Promise<ITask[]> => {
-  const tasks = await tasksRepo.getAll();
-  return tasks.map(Task.toResponse);
+  const taskRepository = getRepository(TaskEntity);
+  const tasks = await taskRepository.find({});
+  return tasks;
 };
 
 // GET TASK BY ID
-const get = async (boardId: string, taskId: string): Promise<ITask> => {
-  const task = await tasksRepo.get(boardId, taskId);
-  return Task.toResponse(task);
+const get = async (boardId: string, taskId: number): Promise<ITask> => {
+  console.log(boardId);
+  const taskRepository = getRepository(TaskEntity);
+  const task = await taskRepository.findOne(taskId);
+  if (!task) {
+    throw new Error('[App] Task not found!');
+  }
+  return task;
 };
 
 // CREATE TASK
@@ -24,54 +31,64 @@ const create = async (
   userId: string,
   columnId: string
 ): Promise<ITask> => {
-  const createdTask = await tasksRepo.create(
-    boardId,
-    title,
-    order,
-    description,
-    userId,
-    columnId
-  );
+  const taskRepository = getRepository(TaskEntity);
 
-  if (createdTask) {
-    return Task.toResponse(createdTask);
+  const task = new TaskEntity();
+  task.boardId = boardId;
+  task.title = title;
+  task.order = order;
+  task.description = description;
+  task.userId = userId;
+  task.columnId = columnId;
+
+  const createdTask = await taskRepository.save(task);
+  if (!createdTask) {
+    throw new Error("[App] Can't create Task!");
   }
-  throw new Error('[App] Null Pointer Exception!');
+
+  const createdTaskResult = await get(createdTask.boardId, createdTask.id);
+  return createdTaskResult;
 };
 
 // UPDATE TASK
 const update = async (
   boardId: string,
-  taskId: string,
+  taskId: number,
   title: string,
   order: string,
   description: string,
   userId: string,
   columnId: string
 ): Promise<ITask> => {
-  const updatedTask = await tasksRepo.update(
+  const taskRepository = getRepository(TaskEntity);
+  const updatedTask = await taskRepository.update(taskId, {
     boardId,
-    taskId,
     title,
     order,
     description,
     userId,
-    columnId
-  );
+    columnId,
+  });
 
-  if (updatedTask) {
-    return Task.toResponse(updatedTask);
+  if (!updatedTask.affected) {
+    throw new Error("[App] Can't Update Task!");
   }
-  throw new Error('[App] Null Pointer Exception!');
+
+  const updatedTaskResult = await get(null, taskId);
+  return updatedTaskResult;
 };
 
 // DELETE TASK
-const remove = async (deletionId: string): Promise<ITask> => {
-  const task = await tasksRepo.remove(deletionId);
-  if (task) {
-    return Task.toResponse(task);
+const remove = async (taskId: number): Promise<ITask> => {
+  const taskDeleteResult = await get(null, taskId);
+
+  const taskRepository = getRepository(TaskEntity);
+  const res = await taskRepository.delete(taskId);
+  if (!res.affected) {
+    throw new Error('[App] Cant Delete Task!');
   }
-  throw new Error('[App] Null Pointer Exception!');
+
+  return taskDeleteResult;
 };
 
 export const tasksService = {

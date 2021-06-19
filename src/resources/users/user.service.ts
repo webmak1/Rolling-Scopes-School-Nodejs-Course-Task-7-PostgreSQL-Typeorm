@@ -36,7 +36,7 @@ const create = async (
 
   const createdUser = await userRepository.save(user);
   if (!createdUser) {
-    throw new Error("[App] Can't create a User!");
+    throw new Error("[App] Can't create User!");
   }
 
   const createdUserResult = await get(createdUser.id.toString());

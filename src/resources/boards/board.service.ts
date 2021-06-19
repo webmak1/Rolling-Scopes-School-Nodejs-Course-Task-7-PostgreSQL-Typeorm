@@ -17,7 +17,7 @@ const get = async (boardId: string): Promise<IBoard> => {
   const boardRepository = getRepository(BoardEntity);
   const board = await boardRepository.findOne(boardId);
   if (!board) {
-    throw new Error('[App] Board is not found!');
+    throw new Error('[App] Board not found!');
   }
   return board;
 };
@@ -66,7 +66,7 @@ const remove = async (boardId: string): Promise<IBoard> => {
   const res = await boardRepository.delete(boardId);
 
   if (!res.affected) {
-    throw new Error('[App] Cant Delete Board!');
+    throw new Error("[App] Can't Delete Board!");
   }
   return boardDeleteResult;
 };

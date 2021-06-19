@@ -12,11 +12,11 @@ interface ITaskGeneral {
 }
 
 export interface ITask extends ITaskGeneral {
-  id: string;
+  id: number;
 }
 
 export interface ITaskInput extends ITaskGeneral {
-  id: string | undefined;
+  id: number | undefined;
 }
 
 export class Task implements ITask {
@@ -29,7 +29,7 @@ export class Task implements ITask {
   public columnId;
 
   constructor({
-    id = uuidv4(),
+    id = +uuidv4(),
     title,
     order,
     description,
@@ -44,9 +44,5 @@ export class Task implements ITask {
     this.userId = userId;
     this.boardId = boardId;
     this.columnId = columnId;
-  }
-
-  static toResponse(task: ITask): ITask {
-    return task;
   }
 }

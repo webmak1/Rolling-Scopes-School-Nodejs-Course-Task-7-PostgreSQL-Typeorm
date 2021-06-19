@@ -9,17 +9,17 @@ export class TaskEntity {
   public title: string;
 
   @Column()
-  public order: string;
+  public order: number;
 
   @Column()
   public description: string;
 
-  @Column()
+  @Column({ nullable: true })
   public userId: string;
 
   @Column()
   public boardId: string;
 
-  @Column()
+  @Column({ nullable: true })
   public columnId: string;
 }

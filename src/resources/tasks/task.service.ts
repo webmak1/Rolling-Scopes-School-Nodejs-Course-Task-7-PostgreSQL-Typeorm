@@ -36,15 +36,21 @@ const create = async (
   const task = new TaskEntity();
   task.boardId = boardId;
   task.title = title;
-  task.order = order;
+  task.order = +order;
   task.description = description;
   task.userId = userId;
   task.columnId = columnId;
+
+  // console.log('Task');
+  // console.log(task);
 
   const createdTask = await taskRepository.save(task);
   if (!createdTask) {
     throw new Error("[App] Can't create Task!");
   }
+
+  console.log('Created Task');
+  console.log(createdTask);
 
   const createdTaskResult = await get(createdTask.boardId, createdTask.id);
   return createdTaskResult;
@@ -55,7 +61,7 @@ const update = async (
   boardId: string,
   taskId: number,
   title: string,
-  order: string,
+  _order: string,
   description: string,
   userId: string,
   columnId: string
@@ -64,7 +70,6 @@ const update = async (
   const updatedTask = await taskRepository.update(taskId, {
     boardId,
     title,
-    order,
     description,
     userId,
     columnId,

@@ -14,6 +14,16 @@ const {
   DATABASE_PASSWORD,
 } = process.env;
 
+if (
+  !DATABASE_HOST ||
+  !DATABASE_NAME ||
+  !DATABASE_PORT ||
+  !DATABASE_USER ||
+  !DATABASE_PASSWORD
+) {
+  throw new Error('[App] Some Issue with .env file');
+}
+
 const config: ConnectionOptions = {
   // name: 'rs-school-db',
   type: 'postgres',

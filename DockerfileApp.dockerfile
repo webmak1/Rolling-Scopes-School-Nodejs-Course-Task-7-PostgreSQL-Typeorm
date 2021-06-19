@@ -7,4 +7,5 @@ COPY package.json ./
 
 RUN npm install --silent
 # COPY ./ ./
+RUN ["npm", "run", "db:migrate"]
 CMD ["npm", "run", "dev"]

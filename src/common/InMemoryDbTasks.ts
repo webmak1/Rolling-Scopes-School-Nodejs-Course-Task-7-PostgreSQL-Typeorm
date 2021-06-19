@@ -85,20 +85,9 @@ const updateTask = async (updatedTask: ITask): Promise<ITask> => {
     setTimeout(() => {
       (async () => {
         try {
-          console.log('----------------------');
-          console.log('UPDATE TASK');
-          console.log(updatedTask);
-          console.log('----------------------');
-
           await removeTask(updatedTask.id);
           await createTask(updatedTask);
           const res = await getTaskById(updatedTask.id);
-
-          console.log('----------------------');
-          console.log('res');
-          console.log(res);
-          console.log('----------------------');
-
           success(res);
         } catch (error) {
           failure(new Error('Error: Something went wrong'));

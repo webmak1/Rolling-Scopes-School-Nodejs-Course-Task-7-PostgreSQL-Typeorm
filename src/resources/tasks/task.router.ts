@@ -70,8 +70,6 @@ router.route('/').post(async (req: Request, res: Response) => {
 
 // UPDATE TASK
 router.route('/:id').put(async (req: Request, res: Response) => {
-  console.log('ROUTE UPDATE TASK');
-
   try {
     const { boardId, id: taskId } = req.params;
     const {
@@ -81,13 +79,6 @@ router.route('/:id').put(async (req: Request, res: Response) => {
       userId,
       columnId,
     } = req.body as ITaskReqBody;
-
-    console.log('ROUTE UPDATE TASK boardId');
-    console.log(boardId);
-
-    console.log('ROUTE UPDATE TASK taskId');
-    console.log(taskId);
-
     if (boardId && taskId) {
       return res.json(
         await tasksService.update(

@@ -10,7 +10,7 @@ https://shell.cloud.google.com/
 <br/>
 
     $ yarn db:drop
-    $ yarn db:create CreateUsers
+    $ yarn db:create CreateMigrations
     $ yarn db:migrate
 
 ### Запуск

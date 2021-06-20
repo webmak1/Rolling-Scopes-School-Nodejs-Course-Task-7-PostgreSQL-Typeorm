@@ -15,7 +15,7 @@ export class TaskEntity {
   description: string;
 
   @Column({ nullable: true })
-  userId: string;
+  userId: string | null;
 
   @Column('uuid')
   boardId: string;

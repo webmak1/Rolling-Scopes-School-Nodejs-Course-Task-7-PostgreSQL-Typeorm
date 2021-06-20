@@ -10,5 +10,4 @@ export class BoardEntity {
 
   @Column({ type: 'json', array: false })
   columns: Array<{ title: string; order: number }>;
-  // columns: string;
 }

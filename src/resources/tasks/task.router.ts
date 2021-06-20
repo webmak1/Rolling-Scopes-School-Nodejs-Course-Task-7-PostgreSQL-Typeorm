@@ -33,13 +33,6 @@ router.route('/:id').get(async (req: Request, res: Response) => {
     }
     return res.status(StatusCodes.BAD_REQUEST).send('[App] invalid req params');
   } catch (err) {
-    console.log('--------------------------------------');
-    console.log('--------------------------------------');
-    console.log('--------------------------------------');
-    console.log(err);
-    console.log('--------------------------------------');
-    console.log('--------------------------------------');
-
     return res.status(StatusCodes.NOT_FOUND).send('Something bad happened!');
   }
 });

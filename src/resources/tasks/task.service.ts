@@ -12,7 +12,7 @@ const getAll = async (): Promise<ITask[]> => {
 };
 
 // GET TASK BY ID
-const get = async (_boardId: string, taskId: string): Promise<ITask> => {
+const get = async (_boardId: string | null, taskId: string): Promise<ITask> => {
   const taskRepository = getRepository(TaskEntity);
   const task = await taskRepository.findOne(taskId);
 

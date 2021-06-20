@@ -12,13 +12,9 @@ const getAll = async (): Promise<ITask[]> => {
 };
 
 // GET TASK BY ID
-const get = async (boardId: string, taskId: string): Promise<ITask> => {
-  console.log(boardId);
+const get = async (_boardId: string, taskId: string): Promise<ITask> => {
   const taskRepository = getRepository(TaskEntity);
   const task = await taskRepository.findOne(taskId);
-
-  console.log('Task');
-  console.log(task);
 
   if (!task) {
     throw new Error('[App] Task not found!');
@@ -45,22 +41,16 @@ const create = async (
   task.userId = userId;
   task.columnId = columnId;
 
-  console.log('Task');
-  console.log(task);
-
   const createdTask = await taskRepository.save(task);
   if (!createdTask) {
     throw new Error("[App] Can't create Task!");
   }
 
-  console.log('Created Task');
-  console.log(createdTask);
-
   const createdTaskResult = await get(createdTask.boardId, createdTask.id);
   return createdTaskResult;
 };
 
-// TODO: _order
+// TODO: FIX ERROR WITH _order
 // UPDATE TASK
 const update = async (
   boardId: string,
@@ -101,10 +91,38 @@ const remove = async (taskId: string): Promise<ITask> => {
   return taskDeleteResult;
 };
 
+// DELETE USER FROM TASKS
+const deleteUserFromTasks = async (userId: string): Promise<void> => {
+  console.log('DELETE');
+  console.log('userId', userId);
+
+  // const taskRepository = getRepository(TaskEntity);
+  // await taskRepository
+  //   .createQueryBuilder()
+  //   .delete()
+  //   .from(TaskEntity)
+  //   .where('userId = :userId', { userId: userId })
+  //   .execute();
+
+  try {
+    const taskRepository = getRepository(TaskEntity);
+    await taskRepository
+      .createQueryBuilder()
+      .update(TaskEntity)
+      .set({ userId: null })
+      .where('userId = :userId', { userId: userId })
+      .execute();
+  } catch (error) {
+    console.log('DELETE ERROR');
+    console.log(error);
+  }
+};
+
 export const tasksService = {
   getAll,
   get,
   create,
   update,
   remove,
+  deleteUserFromTasks,
 };

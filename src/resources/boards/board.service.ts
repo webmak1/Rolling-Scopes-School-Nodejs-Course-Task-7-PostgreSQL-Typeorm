@@ -47,10 +47,6 @@ const update = async (
   columns: string
 ): Promise<IBoard> => {
   const boardRepository = getRepository(BoardEntity);
-
-  console.log('columns');
-  console.log(columns);
-
   // @ts-ignore
   const columnsRes = columnsToArrayofObjects(columns as IColumns[]);
 

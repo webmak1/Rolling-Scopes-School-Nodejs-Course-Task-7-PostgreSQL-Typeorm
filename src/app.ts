@@ -43,13 +43,6 @@ app.all('*', (req: Request, _res: Response, next: NextFunction) => {
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   // writeErrorLog(err, req);
-
-  console.log('ERROR!!!');
-
-  console.log({
-    error: err.name,
-    message: err.message,
-  });
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
     error: err.name,
     message: err.message,

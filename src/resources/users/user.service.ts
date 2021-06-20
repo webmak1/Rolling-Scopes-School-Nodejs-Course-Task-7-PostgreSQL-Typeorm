@@ -1,4 +1,5 @@
 // @ts-check
+import { tasksService } from 'resources/tasks/task.service';
 import { IUserOutput, User } from 'resources/users/user.model';
 import { getRepository } from 'typeorm';
 import { UserEntity } from './user.entity';
@@ -75,6 +76,10 @@ const remove = async (userId: string): Promise<IUserOutput> => {
   if (!res.affected) {
     throw new Error('[App] Cant Delete User!');
   }
+
+  // DELETE USER FROM TASKS
+  await tasksService.deleteUserFromTasks(userId);
+
   return userDeleteResult;
 };
 

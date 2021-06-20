@@ -93,29 +93,23 @@ const remove = async (taskId: string): Promise<ITask> => {
 
 // DELETE USER FROM TASKS
 const deleteUserFromTasks = async (userId: string): Promise<void> => {
-  console.log('DELETE');
-  console.log('userId', userId);
+  const taskRepository = getRepository(TaskEntity);
+  await taskRepository
+    .createQueryBuilder()
+    .update(TaskEntity)
+    .set({ userId: null })
+    .where('userId = :userId', { userId })
+    .execute();
+};
 
-  // const taskRepository = getRepository(TaskEntity);
-  // await taskRepository
-  //   .createQueryBuilder()
-  //   .delete()
-  //   .from(TaskEntity)
-  //   .where('userId = :userId', { userId: userId })
-  //   .execute();
-
-  try {
-    const taskRepository = getRepository(TaskEntity);
-    await taskRepository
-      .createQueryBuilder()
-      .update(TaskEntity)
-      .set({ userId: null })
-      .where('userId = :userId', { userId: userId })
-      .execute();
-  } catch (error) {
-    console.log('DELETE ERROR');
-    console.log(error);
-  }
+// DELETE BOARDS TASKS
+const deleteBoardsTasks = async (boardId: string): Promise<void> => {
+  const taskRepository = getRepository(TaskEntity);
+  await taskRepository
+    .createQueryBuilder()
+    .delete()
+    .where('boardId = :boardId', { boardId })
+    .execute();
 };
 
 export const tasksService = {
@@ -125,4 +119,5 @@ export const tasksService = {
   update,
   remove,
   deleteUserFromTasks,
+  deleteBoardsTasks,
 };

@@ -1,6 +1,7 @@
 // @ts-check
 
 import { IBoard, IColumns } from 'resources/boards/board.model';
+import { tasksService } from 'resources/tasks/task.service';
 import { getRepository } from 'typeorm';
 import { BoardEntity } from './board.entity';
 
@@ -73,6 +74,9 @@ const remove = async (boardId: string): Promise<IBoard> => {
   if (!res.affected) {
     throw new Error("[App] Can't Delete Board!");
   }
+
+  // DELETE BOARDS TASKS
+  await tasksService.deleteBoardsTasks(boardId);
   return boardDeleteResult;
 };
 
